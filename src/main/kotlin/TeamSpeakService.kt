@@ -20,7 +20,7 @@ class TeamSpeakService(
     private var api: TS3Api? = null
     private var query: TS3Query? = null
 
-    init {
+    fun connect() {
         val config = TS3Config().apply {
             setHost(host)
             setQueryPort(10011)
