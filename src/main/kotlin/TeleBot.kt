@@ -29,17 +29,18 @@ object TeleBot : TelegramLongPollingBot() {
     }
 
     private fun checkStartReceived(update: Update) {
-        val chatId = update.message?.chatId ?: return
+        val chatId = update.message?.chatId?.toString() ?: return
         if(update.message?.text?.startsWith("/start") != true) {
             return
         }
         if(ChatManager.isChatConfigured(chatId)) {
             val lastMsg = ChatManager.getChat(chatId)?.pinnedMessageId
             execute(
-                SendMessage()
-                    .setChatId(chatId)
-                    .setText("Already running")
-                    .setReplyToMessageId(lastMsg)
+                SendMessage.builder()
+                    .chatId(chatId)
+                    .text("Already running")
+                    .replyToMessageId(lastMsg)
+                    .build()
             )
         } else {
             askCredentials(chatId)
@@ -48,29 +49,31 @@ object TeleBot : TelegramLongPollingBot() {
 
     private fun askCredentials(chatId: ChatId) {
         val message = execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText("Reply me hostname, username and password each on separate lines")
+            SendMessage.builder()
+                .chatId(chatId)
+                .text("Reply me hostname, username and password each on separate lines")
+                .build()
         )
         ChatManager.setCredentialsRequested(chatId, message.messageId)
     }
 
     private fun checkStopReceived(update: Update) {
-        val chatId = update.message?.chatId ?: return
+        val chatId = update.message?.chatId?.toString() ?: return
         if(update.message?.text?.startsWith("/stop") != true) {
             return
         }
         ChatManager.getChat(chatId) ?: return
         ChatManager.stop(chatId)
         execute(
-            SendMessage()
-                .setChatId(chatId)
-                .setText("Stopping")
+            SendMessage.builder()
+                .chatId(chatId)
+                .text("Stopping")
+                .build()
         )
     }
 
     private fun checkConfigurationReceived(update: Update) {
-        val chatId = update.message?.chatId ?: return
+        val chatId = update.message?.chatId?.toString() ?: return
         val replyTo = update.message?.replyToMessage?.messageId ?: return
         if(!ChatManager.isMessageReplyToConfigRequest(chatId, replyTo)) {
             return
@@ -84,9 +87,10 @@ object TeleBot : TelegramLongPollingBot() {
         val split = update.message.text.split("\n")
         if(split.size != 3) {
             execute(
-                SendMessage()
-                    .setChatId(chatId)
-                    .setText("Format was incorrect, put hostname, username and password each on separate lines.")
+                SendMessage.builder()
+                    .chatId(chatId)
+                    .text("Format was incorrect, put hostname, username and password each on separate lines.")
+                    .build()
             )
             askCredentials(chatId)
             return
@@ -105,9 +109,10 @@ object TeleBot : TelegramLongPollingBot() {
 
         if (config.pinnedMessageId == null) {
             val result = execute(
-                SendMessage()
-                    .setText(msg)
-                    .setChatId(chatId)
+                SendMessage.builder()
+                    .text(msg)
+                    .chatId(chatId)
+                    .build()
             )
             config = config.copy(pinnedMessageId = result.messageId)
 
@@ -116,18 +121,22 @@ object TeleBot : TelegramLongPollingBot() {
 //            }
 
             if (result.chat.pinnedMessage?.messageId != config.pinnedMessageId) {
-                execute(UnpinChatMessage(result.chatId))
+                execute(UnpinChatMessage(result.chatId.toString()))
                 execute(
-                    PinChatMessage(result.chatId, result.messageId)
-                        .setDisableNotification(true)
+                    PinChatMessage.builder()
+                        .chatId(result.chatId.toString())
+                        .messageId(result.messageId)
+                        .disableNotification(true)
+                        .build()
                 )
             }
         } else {
             val result = execute(
-                EditMessageText()
-                    .setChatId(chatId)
-                    .setMessageId(config.pinnedMessageId)
-                    .setText(msg)
+                EditMessageText.builder()
+                    .chatId(chatId)
+                    .messageId(config.pinnedMessageId)
+                    .text(msg)
+                    .build()
             )
         }
         config = config.copy(lastMessage = msg)

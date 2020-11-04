@@ -14,7 +14,7 @@ dependencies {
     testImplementation(kotlin("test-junit"))
     implementation("com.github.theholywaffle:teamspeak3-api:1.2.0")
     implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("org.telegram:telegrambots:4.9")
+    implementation("org.telegram:telegrambots:5.0.0")
 
 }
 tasks.withType<KotlinCompile>() {

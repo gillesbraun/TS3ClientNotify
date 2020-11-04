@@ -1,20 +1,19 @@
 import org.slf4j.LoggerFactory
-import org.telegram.telegrambots.ApiContextInitializer
 import org.telegram.telegrambots.meta.TelegramBotsApi
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 
 fun main(args: Array<String>) {
     Main()
 }
 
-typealias ChatId = Long
+typealias ChatId = String
 
 class Main {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     init {
-        ApiContextInitializer.init()
-        val botsApi = TelegramBotsApi()
+        val botsApi = TelegramBotsApi(DefaultBotSession::class.java)
         botsApi.registerBot(TeleBot)
         logger.info("Running!")
         ChatManager.loadSavedChats()
