@@ -4,8 +4,8 @@ plugins {
     kotlin("jvm") version "1.4.10"
     application
 }
-group = "me.braun"
-version = "1.0-SNAPSHOT"
+group = "lu.braungilles"
+version = "1.1"
 
 repositories {
     mavenCentral()
