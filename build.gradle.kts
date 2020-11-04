@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.4.10"
+    id("de.fuerstenau.buildconfig") version "1.1.8"
     application
 }
 group = "lu.braungilles"
@@ -22,4 +23,14 @@ tasks.withType<KotlinCompile>() {
 }
 application {
     mainClassName = "MainKt"
+}
+
+buildConfig {
+    appName = project.name
+    version = project.version.toString()
+
+    clsName = "BuildConfig"
+    packageName = ""
+
+    charset = "UTF-8"
 }
