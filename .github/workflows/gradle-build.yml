@@ -28,5 +28,5 @@ jobs:
       uses: docker/build-push-action@v2.1.0
       with:
         tags: docker.pkg.github.com/gillesbraun/ts3clientnotify/ts3clientnotify:latest
-        github-token: ${{ REPOSITORY_PUSH_TOKEN }}
+        github-token: ${{ secrets.REPOSITORY_PUSH_TOKEN }}
         push: true
