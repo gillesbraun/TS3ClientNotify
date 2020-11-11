@@ -29,7 +29,7 @@ jobs:
       with:
         registry: https://docker.pkg.github.com/
         username: gillesbraun
-        password: ${{ REPOSITORY_PUSH_TOKEN }}
+        password: ${{ secrets.REPOSITORY_PUSH_TOKEN }}
     - name: Build and push Docker
       uses: docker/build-push-action@v2.1.0
       with:
