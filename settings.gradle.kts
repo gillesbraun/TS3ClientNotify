@@ -1,3 +1,3 @@
 
-rootProject.name = "tele-ts3-bot"
+rootProject.name = "TS3ClientNotify"
 
