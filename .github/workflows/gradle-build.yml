@@ -21,6 +21,6 @@ jobs:
     - name: Build Docker
       uses: docker/build-push-action@v2
       with:
-        tags: ${{ env.REGISTRY }}y/ts3clientnotify:latest
+        tags: docker.pkg.github.com/gillesbraun/ts3clientnotify/ts3clientnotify:latest
     - name: Push Docker Image
-      run: docker push ${{ env.REGISTRY }}/ts3clientnotify:latest
+      run: docker push docker.pkg.github.com/gillesbraun/ts3clientnotify/ts3clientnotify:latest
