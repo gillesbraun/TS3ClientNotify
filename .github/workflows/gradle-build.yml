@@ -30,6 +30,7 @@ jobs:
     - name: Build Docker
       uses: docker/build-push-action@v2
       with:
+        contest: .
         tags: docker.pkg.github.com/gillesbraun/ts3clientnotify/ts3clientnotify:latest
         load: true
     - name: Push Docker Image
